@@ -1,0 +1,13 @@
+gnore all CSV files
+*.csv
+
+# Ignore all PTH (PyTorch model) files
+*.pth
+
+# Ignore everything inside a folder (but keep the folder)
+results/*
+
+# Ignore hidden system files (optional)
+.DS_Store
+Thumbs.db
+
