@@ -191,7 +191,7 @@ def save_model(client_id, feature_count, fold, model_state, file_path = MODEL_PA
 def save_local_train_history_to_csv(client_id, feature_count, fold, metrics, file_path=METRIC_PATH):
 
     # Initialize CSV headers and rows
-    headers = ["Client", "Epoch", "Learing_Rate", "Train Accuracy", "Train Loss", "Validation Accuracy", "Validation Loss", "Training Time (S)"]
+    headers = ["Client", "Feature Count", "Fold", "Epoch", "Learing_Rate", "Train Accuracy", "Train Loss", "Validation Accuracy", "Validation Loss", "Training Time (S)"]
     rows = []
 
     # Check if the file exists
@@ -214,7 +214,7 @@ def save_local_train_history_to_csv(client_id, feature_count, fold, metrics, fil
             training_time = metrics['training_time'][i] if metrics['training_time'][i] > 0 else 0
 
             #Writing the row
-            writer.writerow([client_id, epoch, learning_rate, training_accuracy, training_loss, validation_accuracy, validation_loss, training_time])
+            writer.writerow([client_id, feature_count, fold, epoch, learning_rate, training_accuracy, training_loss, validation_accuracy, validation_loss, training_time])
 
     #print(f"Local Training Metric Saved: {prepare_file_path(file_path)}")
 
