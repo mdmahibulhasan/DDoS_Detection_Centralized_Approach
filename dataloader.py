@@ -1,9 +1,10 @@
 from datasets import load_dataset
+import os
 #from config import TRAIN_DATASET_PATH_ORIGINAL, TEST_DATASET_PATH_ORIGINAL, TRAIN_DATASET_PATH_PCA, TEST_DATASET_PATH_PCA, FOLD, NUM_FEATURES, FEATURE_TYPE, PCA_FEATURES, ORIGINAL_FEATURES
 from config import ( 
     TRAIN_DATASET_PATH_ORIGINAL, TEST_DATASET_PATH_ORIGINAL, 
     TRAIN_DATASET_PATH_PCA, TEST_DATASET_PATH_PCA, FEATURE_TYPE,
-    ALL_FEATURES, LABEL_FEATURE
+    LABEL_FEATURE, CLIENT_WISE_FEATURES
     #PCA_FEATURES, ORIGINAL_FEATURES
     )
 import pandas as pd
@@ -24,7 +25,7 @@ def get_training_datasets_by_client(client_id, fold, feature_count, test_size=0.
         train_file_path = TRAIN_DATASET_PATH_ORIGINAL.format(client_id, fold)
         #features = ORIGINAL_FEATURES.copy()
     
-    features = get_features(feature_count=feature_count, type=FEATURE_TYPE) 
+    features = get_features(client_id=client_id, feature_count=feature_count, type=FEATURE_TYPE) 
     training_dataset = load_dataset(train_file_path)
     training_dataset = training_dataset[features]
     train_set, val_set = train_test_split(training_dataset, test_size=test_size, random_state=42, stratify=training_dataset['Label'])
@@ -32,8 +33,9 @@ def get_training_datasets_by_client(client_id, fold, feature_count, test_size=0.
     return train_set, val_set
 
 ##get features based on criteria number, and type
-def get_features(feature_count, type):
-    df = pd.read_csv(ALL_FEATURES)
+def get_features(client_id, feature_count, type):
+    df = pd.read_csv(CLIENT_WISE_FEATURES.format(client_id))
+    #print(os.path.exists(CLIENT_WISE_FEATURES.format(client_id)))
     features = df[:feature_count].get(type).tolist()
     features.append(LABEL_FEATURE)
     return features
@@ -48,7 +50,7 @@ def get_evaluation_datasets_by_client(client_id, fold, feature_count):
         #features = ORIGINAL_FEATURES.copy()
 
     testing_dataset = load_dataset(test_file_path)
-    features = get_features(feature_count=feature_count, type=FEATURE_TYPE)
+    features = get_features(client_id=client_id, feature_count=feature_count, type=FEATURE_TYPE)
     return testing_dataset[features]
 
 ## combine testset from all the clients
