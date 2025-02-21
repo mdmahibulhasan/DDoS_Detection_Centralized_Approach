@@ -1,16 +1,16 @@
 {
     "dataset_path": {
       "FOLD_RANGE": [1, 2, 3, 4, 5],
-      "TRAIN_DATASET_PATH_PCA": "../IDS/feature_engineering/dataset/client_{0}/fold_{1}/pca/client_{0}_pca_train_dataset.csv",
-      "TEST_DATASET_PATH_PCA": "../IDS/feature_engineering/dataset/client_{0}/fold_{1}/pca/client_{0}_pca_test_dataset.csv",
-      "TRAIN_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset/client_{0}/fold_{1}/client_{0}_scaled_train_dataset.csv",
-      "TEST_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset/client_{0}/fold_{1}/client_{0}_sclaed_test_dataset.csv"
+      "TRAIN_DATASET_PATH_PCA": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/pca/client_{0}_pca_train_dataset.csv",
+      "TEST_DATASET_PATH_PCA": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/pca/client_{0}_pca_test_dataset.csv",
+      "TRAIN_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/client_{0}_scaled_train_dataset.csv",
+      "TEST_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/client_{0}_scaled_test_dataset.csv"
     },
     "features": {
-      "FEATURE_RANGE": [4, 5, 8],
+      "FEATURE_RANGE": [11, 12, 13, 14, 15],
       "FEATURE_TYPE": "original",
       "ALL_FEATURES": "../IDS/final_features.csv",
-      "CLIENT_WISE_FEATURES": "../IDS/feature_engineering/NonFL/final_features_client_{0}.csv",
+      "CLIENT_WISE_FEATURES": "./Features_nonIID/final_features_client_{0}.csv",
       "LABEL_FEATURE": "Label"
     },
     "training": {
