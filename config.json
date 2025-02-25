@@ -7,10 +7,10 @@
       "TEST_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/client_{0}_scaled_test_dataset.csv"
     },
     "features": {
-      "FEATURE_RANGE": [11, 12, 13, 14, 15],
+      "FEATURE_RANGE": [27, 29, 31, 33, 35, 37, 39, 40],
       "FEATURE_TYPE": "original",
       "ALL_FEATURES": "../IDS/final_features.csv",
-      "CLIENT_WISE_FEATURES": "./Features_nonIID/final_features_client_{0}.csv",
+      "CLIENT_WISE_FEATURES": "./Features_nonIID/Independence_Scores_nonIID.csv",
       "LABEL_FEATURE": "Label"
     },
     "training": {
