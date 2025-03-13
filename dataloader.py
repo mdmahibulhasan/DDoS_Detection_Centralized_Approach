@@ -5,7 +5,6 @@ from config import (
     TRAIN_DATASET_PATH_ORIGINAL, TEST_DATASET_PATH_ORIGINAL, 
     TRAIN_DATASET_PATH_PCA, TEST_DATASET_PATH_PCA, FEATURE_TYPE,
     LABEL_FEATURE, CLIENT_WISE_FEATURES
-    #PCA_FEATURES, ORIGINAL_FEATURES
     )
 import pandas as pd
 from sklearn.model_selection import train_test_split
