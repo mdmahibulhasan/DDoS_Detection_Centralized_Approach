@@ -8,7 +8,8 @@ from utils import (
     save_model,
     to_tensor,
     train,
-    test
+    test,
+    construct_autoencoder
 )
 
 
@@ -21,7 +22,8 @@ class CentralizedLearningClient:
         self.fold = fold
         self.feature_count = feature_count
         self.client_id = client_id #savign client ID
-        self.model = Net(input_size=self.feature_count, num_classes=NUM_CLASSES)
+        #self.model = Net(input_size=self.feature_count, num_classes=NUM_CLASSES)
+        self.model = construct_autoencoder(input_size=feature_count)
 
         # Determine device
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -33,7 +35,7 @@ class CentralizedLearningClient:
         lr, epochs, momentum = LEARNING_RATE, EPOCHS, MOMENTUM
         
         # Define the optimizer
-        optim = torch.optim.SGD(self.model.parameters(), lr=lr, momentum=momentum)
+        optim = torch.optim.AdamW(self.model.parameters(), lr=lr, weight_decay=1e-3)
 
         # do local training
         results = train(self.model, self.trainloader, self.valloader, optim, epochs=epochs, device=self.device)

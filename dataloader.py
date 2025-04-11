@@ -4,7 +4,8 @@ import os
 from config import ( 
     TRAIN_DATASET_PATH_ORIGINAL, TEST_DATASET_PATH_ORIGINAL, 
     TRAIN_DATASET_PATH_PCA, TEST_DATASET_PATH_PCA, FEATURE_TYPE,
-    LABEL_FEATURE, CLIENT_WISE_FEATURES
+    LABEL_FEATURE, CLIENT_WISE_FEATURES,
+    BENIGN_TRAFFIC_LABEL
     )
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -27,14 +28,21 @@ def get_training_datasets_by_client(client_id, fold, feature_count, test_size=0.
     features = get_features(client_id=client_id, feature_count=feature_count, type=FEATURE_TYPE) 
     training_dataset = load_dataset(train_file_path)
     training_dataset = training_dataset[features]
-    train_set, val_set = train_test_split(training_dataset, test_size=test_size, random_state=42, stratify=training_dataset['Label'])
+
+    #Keep only benign samples (Label = 0)
+    training_dataset = training_dataset[training_dataset[LABEL_FEATURE] == BENIGN_TRAFFIC_LABEL]
+    #print(training_dataset.shape)
+
+    # Drop 'Label' column (since AutoEncoders don't need it)
+    training_dataset = training_dataset.drop(columns=[LABEL_FEATURE])
+    
+    train_set, val_set = train_test_split(training_dataset, test_size=test_size, random_state=42)
 
     return train_set, val_set
 
 ##get features based on criteria number, and type
 def get_features(client_id, feature_count, type):
     df = pd.read_csv(CLIENT_WISE_FEATURES.format(client_id))
-    #print(os.path.exists(CLIENT_WISE_FEATURES.format(client_id)))
     features = df[:feature_count].get(type).tolist()
     features.append(LABEL_FEATURE)
     return features
@@ -59,9 +67,5 @@ def get_centralized_testset():
     client_2_testset = get_evaluation_datasets_by_client(2)
     client_3_testset = get_evaluation_datasets_by_client(3)
     client_4_testset = get_evaluation_datasets_by_client(4)
-    print(client_1_testset.shape)
-    print(client_2_testset.shape)
-    print(client_3_testset.shape)
-    print(client_4_testset.shape)
     centralized_testset = pd.concat([client_1_testset, client_2_testset, client_3_testset, client_4_testset], axis=0)
     return centralized_testset.sample(frac=1).reset_index(drop=True)
