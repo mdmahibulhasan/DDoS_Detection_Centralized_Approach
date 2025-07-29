@@ -5,7 +5,7 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_s
 from dataloader import get_evaluation_datasets_by_client  # Assuming this function gets local client datasets
 from model import Net
 from collections import OrderedDict
-from config import NUM_CLASSES, NUM_CLIENTS, GLOBAL_MODEL_PATH, BATCH_SIZE, NUM_FEATURES
+from config import NUM_CLASSES, BATCH_SIZE
 from torch.utils.data import DataLoader
 from utils import to_tensor
 import pandas as pd
@@ -16,7 +16,7 @@ STRATEGY = "noFL"
 
 
 # Load the global model from the saved path
-def load_model(model_path=GLOBAL_MODEL_PATH, input_size=NUM_FEATURES, num_classes=NUM_CLASSES):
+def load_model(model_path='', input_size=0, num_classes=NUM_CLASSES):
     model = Net(input_size=input_size, num_classes=num_classes)
     model.load_state_dict(torch.load(model_path))
     model.eval()
@@ -76,14 +76,15 @@ def accumulate_results(results, confusion_matrix_data):
      
     for component in components:  
         for fold in folds:
-            print(f"Inference Running: Feature {component} and Fold {fold}")
-            global_model = path.format(component, fold) + '/' + 'global_model.pth'           
-            model = load_model(model_path=global_model, input_size=component, num_classes=2)
-            model.to(device)    
+            print(f"Inference Running: Feature {component} and Fold {fold}")  
             
-            for client in clients:                                
+            for client in clients:         
+
+                global_model = path.format(client, component, fold)           
+                model = load_model(model_path=global_model, input_size=component, num_classes=2)
+                model.to(device)  
                 testset = get_evaluation_datasets_by_client(client, fold=fold, feature_count=component)  
-                testloader = DataLoader(to_tensor(testset), batch_size=BATCH_SIZE)
+                testloader = DataLoader(to_tensor(testset), batch_size=BATCH_SIZE)                
                 preds, labels, inference_time_per_sample = run_inference(model, testloader, device)
                 client_metrics['Strategy'].append(STRATEGY)
                 client_metrics['Component'].append(component)
@@ -113,13 +114,13 @@ def accumulate_results(results, confusion_matrix_data):
 
 if __name__ == "__main__":
     result_sources = {
-        'components': range(4, 21),
+        'components': [4, 6, 8, 10, 12],
         'folds': [1, 2, 3, 4, 5],
         #'folds': [1, 2],
         'marker': ['o', '-', '^' 'x', '-o-'],
-        'clients': [1, 2, 3, 4],
-        'path': './results/2.2_Results/client_{0}/original_{1}_fold_{2}'
+        'clients': [5, 6],
+        'path': './results/client_{0}/feature_{1}_fold_{2}_model.pth'
     }
     confusion_matrix_data = {}
     result_df, store_results_df = accumulate_results(result_sources, confusion_matrix_data)
-    result_df.to_csv("./results/2.2_Results/uk50_noFL_results.csv", index=False)
+    result_df.to_csv("./results/6_clients_noFL.csv", index=False)

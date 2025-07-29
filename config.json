@@ -3,19 +3,19 @@
       "FOLD_RANGE": [1, 2, 3, 4, 5],
       "TRAIN_DATASET_PATH_PCA": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/pca/client_{0}_pca_train_dataset.csv",
       "TEST_DATASET_PATH_PCA": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/pca/client_{0}_pca_test_dataset.csv",
-      "TRAIN_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/client_{0}_scaled_train_dataset.csv",
-      "TEST_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset_nonIID/client_{0}/fold_{1}/uk25_client_{0}_scaled_test_dataset.csv"
+      "TRAIN_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset_IID/client_{0}/fold_{1}/client_{0}_scaled_train_dataset.csv",
+      "TEST_DATASET_PATH_ORIGINAL": "../IDS/feature_engineering/dataset_IID/client_{0}/fold_{1}/client_{0}_sclaed_test_dataset.csv"
     },
     "features": {
-      "FEATURE_RANGE": [12, 14, 16, 18, 20, 22],
+      "FEATURE_RANGE": [4, 6, 8, 10, 12],
       "FEATURE_TYPE": "original",
-      "CLIENT_WISE_FEATURES": "./2.2_features/final_features_client_{}.csv",
+      "CLIENT_WISE_FEATURES": "../IDS/nonFL_6_Clients/final_features_client_{0}.csv",
       "LABEL_FEATURE": "Label"
     },
     "training": {
       "LEARNING_RATE": 0.0001,
-      "EPOCHS": 50,
-      "BATCH_SIZE": 256,
+      "EPOCHS": 30,
+      "BATCH_SIZE": 512,
       "MOMENTUM": 0.9,
       "NUM_CLASSES": 2
     },
